@@ -163,8 +163,7 @@ public class m_interface extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new m_interface().setVisible(true);
-                String currentDatabase;
-                currentDatabase="";
+                String currentDatabase = "";
             }
         });
     }
