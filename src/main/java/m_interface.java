@@ -41,6 +41,8 @@ public class m_interface extends javax.swing.JFrame {
         cmdCommit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("OJC Database Interface");
@@ -75,6 +77,10 @@ public class m_interface extends javax.swing.JFrame {
 
         jLabel2.setText("RESULT");
 
+        jLabel3.setText("Seleceted Database:");
+
+        jLabel5.setText("None yet selected.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,13 +100,22 @@ public class m_interface extends javax.swing.JFrame {
                         .addGap(334, 334, 334)
                         .addComponent(cmdExecute)
                         .addGap(130, 130, 130)
-                        .addComponent(cmdCommit)))
+                        .addComponent(cmdCommit))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(355, 355, 355)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSQL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -112,7 +127,7 @@ public class m_interface extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdCommit)
                     .addComponent(cmdExecute))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pack();
@@ -144,8 +159,9 @@ public class m_interface extends javax.swing.JFrame {
             mySQL = mySQL.toUpperCase();
             if(mySQL.startsWith("CREATE"))
             {
-                result = database.Createdb(dbName);
-                txtResult.setText(result);
+                jLabel5.setText(dbName);
+//                result = database.Createdb(dbName);
+//                txtResult.setText(result);
             }
         }
     }//GEN-LAST:event_cmdCommitActionPerformed
@@ -190,6 +206,8 @@ public class m_interface extends javax.swing.JFrame {
     private javax.swing.JButton cmdExecute;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtResult;
     private javax.swing.JTextField txtSQL;
