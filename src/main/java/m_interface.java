@@ -164,7 +164,6 @@ public class m_interface extends javax.swing.JFrame {
             public void run() {
                 new m_interface().setVisible(true);
                 String currentDatabase = "";
-                String currentDatabases = "";
             }
         });
     }
