@@ -1,4 +1,7 @@
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 import src.CreateDb;
 
@@ -153,16 +156,45 @@ public class m_interface extends javax.swing.JFrame {
         // TODO add your handling code here:
         String mySQL = txtSQL.getText().replaceAll("( )+", " ").trim();
         String token[] = mySQL.split("\\s*(=>|;|\\s)\\s*");
-        String dbName = token[2].trim();
         String result = "";
         if(syntaxValid){
             mySQL = mySQL.toUpperCase();
             if(mySQL.startsWith("CREATE"))
             {
-                jLabel5.setText(dbName);
-//                result = database.Createdb(dbName);
-//                txtResult.setText(result);
+                String dbName = token[2].trim();
+                result = database.Createdb(dbName);
+                txtResult.setText(result);
+            }else if(mySQL.startsWith("USE"))
+            {
+                String dbName = token[1].trim();
+                currentDatabase = dbName;
+                jLabel5.setText(currentDatabase);
+                txtResult.setText(dbName + " Was Succesfuly Selected");
+            }else if(mySQL.startsWith("SHOW"))
+            {
+                File file = new File("./data");
+                String data;
+                
+                String[] directories = file.list(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File current, String name) {
+                            return new File(current, name).isDirectory();
+                    }
+                });
+                
+                if(directories.length == 0) {
+                    System.out.println("No Tables Found ");
+                    data = "No Tables Found ";
+                    txtResult.setText(data);
+                }else {
+                    txtResult.setText("Available Databases are:\n");
+                    for(int i=0; i < directories.length; i++) {
+                            txtResult.append(directories[i] + "\n");
+                    }
+                }
             }
+        }else{
+            txtResult.setText("You must execute your query first before committing!");
         }
     }//GEN-LAST:event_cmdCommitActionPerformed
 
@@ -230,6 +262,8 @@ public class m_interface extends javax.swing.JFrame {
         delete1 ="^DELETE FROM +[A-Za-z]+[0-9A-Za-z]*+ WHERE +[A-Za-z]+[0-9A-Za-z]*+[ ]*+(<|>|=|!=|<=|>=)+[ ]*+(\\d+|[']+\\S+['])+[ ]*+[;]$";
         final String update1;
         update1 = "^UPDATE +[A-Za-z]+[0-9A-Za-z]*+ SET +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[=]+[ ]*(\\d+|[']+\\S+['])+ WHERE +[A-Za-z]+[0-9A-Za-z]*+(<|>|=|!=|<=|>=)+[ ]*+(\\d+|[']+\\S+['])+[ ]*+[;]$";
+        final String show1;
+        show1 = "^SHOW +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[;]$";
         
         if(inputSQL.startsWith("SELECT")){
             regexpattern = select1;
@@ -248,7 +282,9 @@ public class m_interface extends javax.swing.JFrame {
                         }else {
                             if(inputSQL.startsWith("USE")){
                                 regexpattern = use1;
-                            } else{
+                            }else if(inputSQL.startsWith("SHOW")){
+                                regexpattern = show1;
+                            }else{
                                 return false;
                             }
                         }
