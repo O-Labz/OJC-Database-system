@@ -1,5 +1,6 @@
 
 import java.util.regex.Pattern;
+import src.CreateDb;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,6 +13,10 @@ import java.util.regex.Pattern;
  * @author 10011971
  */
 public class m_interface extends javax.swing.JFrame {
+    
+    private String currentDatabase = "";
+    private boolean syntaxValid = false;
+    CreateDb database = new CreateDb();
 
     /**
      * Creates new form m_interface
@@ -121,6 +126,7 @@ public class m_interface extends javax.swing.JFrame {
         } else {
             if(validateSyntax(checkSQL)){
                 txtResult.setText(checkSQL + "\n" + "Valid SQL query.");
+                syntaxValid = true;
             } else{
                 txtResult.setText(checkSQL + "\n" + "Syntax error! Please check SQL query.");
             }
@@ -130,6 +136,19 @@ public class m_interface extends javax.swing.JFrame {
 
     private void cmdCommitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCommitActionPerformed
         // TODO add your handling code here:
+        String mySQL = txtSQL.getText().replaceAll("( )+", " ").trim();
+        String token[] = mySQL.split(" ");
+        String dbName = token[3].trim();
+        txtResult.setText(dbName);
+        String result = "";
+//        if(syntaxValid){
+//            mySQL = mySQL.toUpperCase();
+//            if(mySQL.startsWith("CREATE"))
+//            {
+//                result = database.Createdb("Omri");
+//                txtResult.setText(result);
+//            }
+//        }
     }//GEN-LAST:event_cmdCommitActionPerformed
 
     /**
@@ -163,7 +182,6 @@ public class m_interface extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new m_interface().setVisible(true);
-                String currentDatabase = "";
             }
         });
     }
