@@ -137,18 +137,17 @@ public class m_interface extends javax.swing.JFrame {
     private void cmdCommitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCommitActionPerformed
         // TODO add your handling code here:
         String mySQL = txtSQL.getText().replaceAll("( )+", " ").trim();
-        String token[] = mySQL.split(" ");
-        String dbName = token[3].trim();
-        txtResult.setText(dbName);
+        String token[] = mySQL.split("\\s*(=>|;|\\s)\\s*");
+        String dbName = token[2].trim();
         String result = "";
-//        if(syntaxValid){
-//            mySQL = mySQL.toUpperCase();
-//            if(mySQL.startsWith("CREATE"))
-//            {
-//                result = database.Createdb("Omri");
-//                txtResult.setText(result);
-//            }
-//        }
+        if(syntaxValid){
+            mySQL = mySQL.toUpperCase();
+            if(mySQL.startsWith("CREATE"))
+            {
+                result = database.Createdb(dbName);
+                txtResult.setText(result);
+            }
+        }
     }//GEN-LAST:event_cmdCommitActionPerformed
 
     /**
