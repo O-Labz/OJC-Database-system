@@ -1,11 +1,13 @@
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 import src.CreateDb;
 import src.CreateTable;
 import src.TableInsert;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -184,6 +186,25 @@ public class m_interface extends javax.swing.JFrame {
                 String tableName = token[2].trim();
                 result = insertFunc.TableInsert(currentDatabase, tableName ,sql);
                 txtResult.setText(result);
+            }else if(mySQL.startsWith("SELECT"))
+            {
+                if(token[1].trim().equals("*"))
+                {
+                    String tableName = token[3].trim();
+                    try {
+                        File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
+                        Scanner myReader = new Scanner(table);
+                        txtResult.setText("");
+                        while (myReader.hasNextLine()) {
+                            String data = myReader.nextLine();
+                            txtResult.append(data+"\n");
+                        }
+                        myReader.close();
+                    } catch (FileNotFoundException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
+                }
             }else if(mySQL.startsWith("SHOW"))
             {
                 File file = new File("./data");
