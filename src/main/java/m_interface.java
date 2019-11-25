@@ -156,6 +156,7 @@ public class m_interface extends javax.swing.JFrame {
     private void cmdCommitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCommitActionPerformed
         // TODO add your handling code here:
         String mySQL = txtSQL.getText().replaceAll("( )+", " ").trim();
+        String sql = txtSQL.getText().trim();
         String token[] = mySQL.split("\\s*(=>|;|\\s)\\s*");
         String result = "";
         if(syntaxValid){
@@ -173,7 +174,8 @@ public class m_interface extends javax.swing.JFrame {
                 txtResult.setText(dbName + " Was Succesfuly Selected");
             }else if(mySQL.startsWith("CREATE") && token[1].equals("TABLE") || mySQL.startsWith("CREATE") && token[1].equals("table"))
             {
-                result = createTable.CreateTable(currentDatabase, "shinez");
+                String tableName = token[2].trim();
+                result = createTable.CreateTable(currentDatabase, tableName ,sql);
                 txtResult.setText(result);
             }else if(mySQL.startsWith("SHOW"))
             {
