@@ -1,9 +1,9 @@
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 import src.CreateDb;
+import src.CreateTable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +20,7 @@ public class m_interface extends javax.swing.JFrame {
     private String currentDatabase = "";
     private boolean syntaxValid = false;
     CreateDb database = new CreateDb();
+    CreateTable createTable = new CreateTable();
 
     /**
      * Creates new form m_interface
@@ -159,7 +160,7 @@ public class m_interface extends javax.swing.JFrame {
         String result = "";
         if(syntaxValid){
             mySQL = mySQL.toUpperCase();
-            if(mySQL.startsWith("CREATE"))
+            if(mySQL.startsWith("CREATE") && token[1].equals("DATABASE") || mySQL.startsWith("CREATE") && token[1].equals("database"))
             {
                 String dbName = token[2].trim();
                 result = database.Createdb(dbName);
@@ -170,6 +171,10 @@ public class m_interface extends javax.swing.JFrame {
                 currentDatabase = dbName;
                 jLabel5.setText(currentDatabase);
                 txtResult.setText(dbName + " Was Succesfuly Selected");
+            }else if(mySQL.startsWith("CREATE") && token[1].equals("TABLE") || mySQL.startsWith("CREATE") && token[1].equals("table"))
+            {
+                result = createTable.CreateTable(currentDatabase, "shinez");
+                txtResult.setText(result);
             }else if(mySQL.startsWith("SHOW"))
             {
                 File file = new File("./data");

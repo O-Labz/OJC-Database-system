@@ -15,10 +15,9 @@ import java.io.IOException;
  */
 public class CreateTable {
     
-    private long duration;
-    
     public String CreateTable (String databaseName, String tableName) {
         File table = null;
+        long duration = 0;
 
         //		 create db table
         try {
