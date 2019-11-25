@@ -251,7 +251,7 @@ public class m_interface extends javax.swing.JFrame {
         String regexpattern;
         inputSQL = inputSQL.toUpperCase();
         final String create1;
-        create1 = "^CREATE +(DATABASE +[A-Za-z]+[0-9A-Za-z]*|TABLE +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[(]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]+(int|String)+([,]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]+(int|String))*+[ ]*+[)]|INDEX +[A-Za-z]+[0-9A-Za-z]*+[ ]+ON+[ ]+[(]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]*+([,]+[ ]*+[A-Za-z]+[0-9A-Za-z]*)*+[ ]*+[)])+[ ]*+[;]$";
+        create1 = "^CREATE +(DATABASE +[A-Za-z]+[0-9A-Za-z]*|TABLE +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[(]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]+(INT|STRING)+([,]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]+(INT|STRING))*+[ ]*+[)]|INDEX +[A-Za-z]+[0-9A-Za-z]*+[ ]+ON+[ ]+[(]+[ ]*+[A-Za-z]+[0-9A-Za-z]*+[ ]*+([,]+[ ]*+[A-Za-z]+[0-9A-Za-z]*)*+[ ]*+[)])+[ ]*+[;]$";
         final String use1;
         use1 = "^USE +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[;]$";
         final String select1;
