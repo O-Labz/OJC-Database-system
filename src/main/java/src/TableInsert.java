@@ -19,7 +19,8 @@ import java.util.regex.Pattern;
 public class TableInsert {
     
     CreateTable createTable = new CreateTable();
-
+    
+//    This function inserts a row into a table
     public String TableInsert (String databaseName, String tableName, String row) {
         
         long duration = 0;

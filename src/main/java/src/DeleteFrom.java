@@ -17,6 +17,8 @@ import java.nio.file.Files;
  */
 public class DeleteFrom {
     
+    
+    // This function will create a temporary file write everything to it that is needed and omit the row to be deleted.
     public void DeleteFrom(String lineContent) throws IOException
 {
     File file = new File("myFile.txt");

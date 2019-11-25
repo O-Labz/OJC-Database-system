@@ -2,7 +2,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import src.CreateDb;
@@ -157,8 +156,9 @@ public class m_interface extends javax.swing.JFrame {
     // TODO add your handling code here:
     }//GEN-LAST:event_cmdExecuteActionPerformed
 
+//    Where all statements are committed 
     private void cmdCommitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCommitActionPerformed
-        // TODO add your handling code here:
+        // Declare variables to begin filtering statements
         String mySQL = txtSQL.getText().replaceAll("( )+", " ").trim();
         String sql = txtSQL.getText().trim();
         String token[] = mySQL.split("\\s*(=>|;|\\s)\\s*");
@@ -281,7 +281,7 @@ public class m_interface extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     
-    
+//    Validation on each sql statements done here using regex
     private boolean validateSyntax(String inputSQL){
         String regexpattern;
         inputSQL = inputSQL.toUpperCase();

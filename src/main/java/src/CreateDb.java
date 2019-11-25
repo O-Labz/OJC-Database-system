@@ -16,6 +16,8 @@ public class CreateDb {
     
     private File database = null;
     
+    // This function creates database
+    
     public String Createdb (String DatabaseName) {
         
         long startTime = System.nanoTime();

@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
  */
 public class CreateTable {
     
+//    This function creates the table
     public String CreateTable (String databaseName, String tableName, String sql) {
         File table = null;
         long duration = 0;
@@ -48,6 +49,8 @@ public class CreateTable {
     }
     
     
+    
+//        This function adds the columns to the table
     	public void AddColumns (String databaseName, String tableName, String tableHeader) {
 		
 		// Update Table
