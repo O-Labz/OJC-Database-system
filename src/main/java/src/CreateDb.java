@@ -24,7 +24,7 @@ public class CreateDb {
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         
-        return "Database " + DatabaseName + " was succesfuly created" + " and it took a total of " + duration + "nano seconds to run";
+        return "Database " + DatabaseName + " was succesfuly created" + " and it took a total of " + duration + " nano seconds to run";
     }
     
 }

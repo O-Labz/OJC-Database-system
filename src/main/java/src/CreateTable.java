@@ -32,19 +32,19 @@ public class CreateTable {
             table.createNewFile();
             FileOutputStream outPutFile = new FileOutputStream(table, false); 
             outPutFile.close();
-            Matcher parenthesesText = Pattern.compile("\\((.*?)\\)").matcher(sql);         
+            System.out.print("Table " + tableName + " Created");
+            Matcher parenthesesText = Pattern.compile("\\((.*?)\\)").matcher(sql);
             while(parenthesesText.find()) 
             {
                 AddColumns(databaseName, tableName, parenthesesText.group(1));
             }
             long endTime = System.nanoTime();
             duration = (endTime - startTime);
-            System.out.print("Table " + tableName + " Created");
         } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
         } 
-        return "Table " + tableName + " was succesfuly created" + " and it took a total of " + duration + "nano seconds to run";
+        return "Table " + tableName + " was succesfuly created" + " and it took a total of " + duration + " nano seconds to run";
     }
     
     

@@ -4,6 +4,7 @@ import java.io.FilenameFilter;
 import java.util.regex.Pattern;
 import src.CreateDb;
 import src.CreateTable;
+import src.TableInsert;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,6 +22,7 @@ public class m_interface extends javax.swing.JFrame {
     private boolean syntaxValid = false;
     CreateDb database = new CreateDb();
     CreateTable createTable = new CreateTable();
+    TableInsert insertFunc = new TableInsert();
 
     /**
      * Creates new form m_interface
@@ -176,6 +178,11 @@ public class m_interface extends javax.swing.JFrame {
             {
                 String tableName = token[2].trim();
                 result = createTable.CreateTable(currentDatabase, tableName ,sql);
+                txtResult.setText(result);
+            }else if(mySQL.startsWith("INSERT"))
+            {
+                String tableName = token[2].trim();
+                result = insertFunc.TableInsert(currentDatabase, tableName ,sql);
                 txtResult.setText(result);
             }else if(mySQL.startsWith("SHOW"))
             {
