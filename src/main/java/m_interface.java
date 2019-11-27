@@ -2,11 +2,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import src.CreateDb;
 import src.CreateTable;
 import src.TableInsert;
+import src.CheckCollumn;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,11 +24,12 @@ import src.TableInsert;
  */
 public class m_interface extends javax.swing.JFrame {
     
-    private String currentDatabase = "";
+    private String currentDatabase = "omri";
     private boolean syntaxValid = false;
     CreateDb database = new CreateDb();
     CreateTable createTable = new CreateTable();
     TableInsert insertFunc = new TableInsert();
+    CheckCollumn checkCol = new CheckCollumn();
 
     /**
      * Creates new form m_interface
@@ -188,9 +194,9 @@ public class m_interface extends javax.swing.JFrame {
                 txtResult.setText(result);
             }else if(mySQL.startsWith("SELECT"))
             {
-                if(token[1].trim().equals("*"))
+                String tableName = token[3].trim();
+                if(token[1].trim().equals("*") && !mySQL.contains("WHERE"))
                 {
-                    String tableName = token[3].trim();
                     try {
                         File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
                         Scanner myReader = new Scanner(table);
@@ -204,6 +210,164 @@ public class m_interface extends javax.swing.JFrame {
                         System.out.println("An error occurred.");
                         e.printStackTrace();
                     }
+                }else if (token[1].trim().equals("*") && mySQL.contains("WHERE")){
+                    
+                    String whereParams = mySQL.substring(mySQL.indexOf("WHERE") + 6).replaceAll("(;)+", " ").trim();
+                    
+                    String params[] = whereParams.split("\\s*(=>|;|\\s)\\s*");
+                    
+                    String opperand = params[1];
+                    
+                    String collumnName = params[0].trim().toLowerCase();
+                    
+                    String collumnDetails = "";
+                    
+                    String Value = params[2].trim().toLowerCase();
+                    
+                    String fetchResult = "";
+                    
+                    try {
+                        collumnDetails = checkCol.CheckCollumn(currentDatabase, tableName, collumnName);
+                    } catch (IOException ex) {
+                        Logger.getLogger(m_interface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println(collumnDetails);
+                    String newCollumnDetails[] =collumnDetails.split("\\s");
+                    int locate = Integer.parseInt(newCollumnDetails[1]);
+                    int intValue = Integer.parseInt(Value);
+                    
+                    
+                    switch (opperand) {
+                        case "=":
+                            
+                        {
+                            //Now fectch row if match found
+                            if(newCollumnDetails[0].equals("true"))
+                            {
+                                txtResult.setText("");
+                                try {
+                                    File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
+                                    Scanner myReader = new Scanner(table);
+                                    myReader.nextLine();
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        fetchResult = data.replaceAll("(\\s)+", "").trim();;
+                                        fetchResult = fetchResult.replaceAll("(\\|)+", " ").trim();
+                                        String rowParams[] = fetchResult.split("\\s");
+                                        if(rowParams[locate].equals(Value)){
+                                            fetchResult = data;
+                                            txtResult.append("\n"+fetchResult.replaceAll("(\\s)+", " | ").trim());
+                                        }
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    System.out.println("An error occurred.");
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                txtResult.setText(collumnName+" was not found in column for the table "+tableName);
+                            }
+                        }
+                            break;
+
+
+                        case ">":
+                            System.out.println("Opperand is : >");
+                            //Now fectch row if match found
+                            if(newCollumnDetails[0].equals("true"))
+                            {
+                                txtResult.setText("");
+                                try {
+                                    File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
+                                    Scanner myReader = new Scanner(table);
+                                    myReader.nextLine();
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        fetchResult = data.replaceAll("(\\s)+", "").trim();;
+                                        fetchResult = fetchResult.replaceAll("(\\|)+", " ").trim();
+                                        String rowParams[] = fetchResult.split("\\s");
+                                        if(Integer.parseInt(rowParams[locate]) > intValue){
+                                            fetchResult = data;
+                                            txtResult.append("\n"+fetchResult.replaceAll("(\\s)+", " | ").trim());
+                                        }
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    System.out.println("An error occurred.");
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                txtResult.setText(collumnName+" was not found in column for the table "+tableName);
+                            }
+                            break;
+                        case "<":
+                            System.out.println("Opperand is : <");
+                            
+                            //Now fectch row if match found
+                            if(newCollumnDetails[0].equals("true"))
+                            {
+                                txtResult.setText("");
+                                try {
+                                    File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
+                                    Scanner myReader = new Scanner(table);
+                                    myReader.nextLine();
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        fetchResult = data.replaceAll("(\\s)+", "").trim();;
+                                        fetchResult = fetchResult.replaceAll("(\\|)+", " ").trim();
+                                        String rowParams[] = fetchResult.split("\\s");
+                                        if(Integer.parseInt(rowParams[locate]) < intValue){
+                                            fetchResult = data;
+                                            txtResult.append("\n"+fetchResult.replaceAll("(\\s)+", " | ").trim());
+                                        }
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    System.out.println("An error occurred.");
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                txtResult.setText(collumnName+" was not found in column for the table "+tableName);
+                            }
+                            
+                            break;
+                        case "!=":
+                            System.out.println("Opperand is : !=");
+                            
+                            //Now fectch row if match found
+                            if(newCollumnDetails[0].equals("true"))
+                            {
+                                txtResult.setText("");
+                                try {
+                                    File table = new File("./data/"+currentDatabase+"/"+tableName+".txt");
+                                    Scanner myReader = new Scanner(table);
+                                    myReader.nextLine();
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        fetchResult = data.replaceAll("(\\s)+", "").trim();;
+                                        fetchResult = fetchResult.replaceAll("(\\|)+", " ").trim();
+                                        String rowParams[] = fetchResult.split("\\s");
+                                        if(Integer.parseInt(rowParams[locate]) != intValue){
+                                            fetchResult = data;
+                                            txtResult.append("\n"+fetchResult.replaceAll("(\\s)+", " | ").trim());
+                                        }
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    System.out.println("An error occurred.");
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                txtResult.setText(collumnName+" was not found in column for the table "+tableName);
+                            }
+                            
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                    
+                    System.out.println(Arrays.toString(params));
                 }
             }else if(mySQL.startsWith("SHOW"))
             {

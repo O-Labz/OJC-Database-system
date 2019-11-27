@@ -1,5 +1,5 @@
 id int| ngn string| blah string| ok string
-1, 'hello', 'world', 'record'
+1| 'hello'| 'world'| 'record'
 2| 'me'| 'badman'| 'town'
-3, 'yo', 'wah', 'gwan'
+3| 'yo'| 'wah| 'gwan'
 4| mark| ok| john
