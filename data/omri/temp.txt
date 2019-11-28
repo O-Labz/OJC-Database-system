@@ -1,5 +1,0 @@
-id int| ngn string| blah string| ok string
-1| 'hello'| 'world'| 'record'
-2| 'me'| 'badman'| 'town'
-3| 'yo'| 'wah| 'gwan'
-5| mak| ok| john

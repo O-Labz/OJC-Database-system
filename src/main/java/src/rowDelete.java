@@ -27,16 +27,17 @@ public class rowDelete {
     // This function will create a temporary file write everything to it that is needed and omit the row to be deleted.
     public String DeleteFrom(String databaseName, String tableName, String collumnName, String location, String opperand, String Value) throws IOException
 {
+        String lineToRemove = "";
+        long duration = 0;
     
         try {
-            
+        long startTime = System.nanoTime();
         File inputFile = new File("./data/"+databaseName+"/"+tableName+".txt");
         File tempFile = new File("./data/"+databaseName+"/temp.txt");
 
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
-        String lineToRemove = "";
         String currentLine;
         String result;
         
@@ -62,12 +63,13 @@ public class rowDelete {
         writer.close(); 
         reader.close(); 
         boolean successful = tempFile.renameTo(inputFile);
-
+        long endTime = System.nanoTime();
+        duration = (endTime - startTime);
     } catch (FileNotFoundException e) {
         System.out.println("An error occurred.");
         e.printStackTrace();
     }
-    return "Delete Complete";
+    return "Delete line " + lineToRemove + " from table " + tableName + " in " + duration +" nano seconds";
 }
     
 }

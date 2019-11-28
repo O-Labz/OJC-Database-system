@@ -3,4 +3,3 @@ id int| ngn string| blah string| ok string
 2| 'me'| 'badman'| 'town'
 3| 'yo'| 'wah| 'gwan'
 4| mark| ok| john
-5| mak| ok| john
