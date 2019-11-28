@@ -12,11 +12,11 @@ import src.CreateDb;
 import src.CreateTable;
 import src.TableInsert;
 import src.CheckCollumn;
+import src.rowDelete;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
- */
 
 /**
  *
@@ -30,6 +30,7 @@ public class m_interface extends javax.swing.JFrame {
     CreateTable createTable = new CreateTable();
     TableInsert insertFunc = new TableInsert();
     CheckCollumn checkCol = new CheckCollumn();
+    rowDelete deleteRow = new rowDelete();
 
     /**
      * Creates new form m_interface
@@ -187,6 +188,37 @@ public class m_interface extends javax.swing.JFrame {
                 String tableName = token[2].trim();
                 result = createTable.CreateTable(currentDatabase, tableName ,sql);
                 txtResult.setText(result);
+            }else if(mySQL.startsWith("DELETE"))
+            {
+                String tableName = token[2].trim();
+                
+                String whereParams = mySQL.substring(mySQL.indexOf("WHERE") + 6).replaceAll("(;)+", " ").trim();
+
+                String params[] = whereParams.split("\\s");
+                
+                String opperand = params[1];
+
+                String collumnName = params[0].trim().toLowerCase();
+                
+                String Value = params[2].trim();
+                
+                String collumnDetails = "";
+                
+                
+                try {
+                    collumnDetails = checkCol.CheckCollumn(currentDatabase, tableName, collumnName);
+                
+                    String newCollumnDetails[] =collumnDetails.split("\\s");
+
+                    String collumnLocation = newCollumnDetails[1];
+
+                    // if column exist in db begin delete
+                    if(newCollumnDetails[0].equals("true"))
+                    {
+                        txtResult.setText(deleteRow.DeleteFrom(currentDatabase, tableName, collumnName, collumnLocation, opperand, Value));
+                    }
+                    } catch (IOException ex) {Logger.getLogger(m_interface.class.getName()).log(Level.SEVERE, null, ex);
+                }  
             }else if(mySQL.startsWith("INSERT"))
             {
                 String tableName = token[2].trim();

@@ -28,8 +28,8 @@ public class CheckCollumn {
         text = text.replaceAll("int", "").trim();
         text = text.replaceAll("string", "").trim();
         text = text.replaceAll("\\s", "").trim();
-        System.out.println(text);
         text = text.replaceAll("(\\|)+", " ").trim();
+        System.out.println(text);
         String params[] = text.split("\\s");
         for(int i = 0; i < params.length; i++)
         {
