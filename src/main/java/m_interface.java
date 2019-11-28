@@ -13,6 +13,7 @@ import src.CreateTable;
 import src.TableInsert;
 import src.CheckCollumn;
 import src.rowDelete;
+import src.RowUpdate;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -31,6 +32,7 @@ public class m_interface extends javax.swing.JFrame {
     TableInsert insertFunc = new TableInsert();
     CheckCollumn checkCol = new CheckCollumn();
     rowDelete deleteRow = new rowDelete();
+    RowUpdate updateRow = new RowUpdate();
 
     /**
      * Creates new form m_interface
@@ -224,6 +226,37 @@ public class m_interface extends javax.swing.JFrame {
                 String tableName = token[2].trim();
                 result = insertFunc.TableInsert(currentDatabase, tableName ,sql);
                 txtResult.setText(result);
+            }else if(mySQL.startsWith("UPDATE"))
+            {
+                String tableName = token[2].trim();
+                
+                String whereParams = mySQL.substring(mySQL.indexOf("WHERE") + 6).replaceAll("(;)+", " ").trim();
+
+                String params[] = whereParams.split("\\s");
+                
+                String opperand = params[1];
+
+                String collumnName = params[0].trim().toLowerCase();
+                
+                String Value = params[2].trim();
+                
+                String collumnDetails = "";
+                
+                try {
+                    collumnDetails = checkCol.CheckCollumn(currentDatabase, tableName, collumnName);
+                
+                    String newCollumnDetails[] =collumnDetails.split("\\s");
+
+                    String collumnLocation = newCollumnDetails[1];
+
+                    // if column exist in db begin delete
+                    if(newCollumnDetails[0].equals("true"))
+                    {
+//                        updateRow.UpdateRow(currentDatabase, tableName, collumnName, collumnLocation, opperand, Value);
+                        updateRow.UpdateRow();
+                    }
+                    } catch (IOException ex) {Logger.getLogger(m_interface.class.getName()).log(Level.SEVERE, null, ex);
+                } 
             }else if(mySQL.startsWith("SELECT"))
             {
                 String tableName = token[3].trim();
@@ -492,7 +525,7 @@ public class m_interface extends javax.swing.JFrame {
         final String delete1;
         delete1 ="^DELETE FROM +[A-Za-z]+[0-9A-Za-z]*+ WHERE +[A-Za-z]+[0-9A-Za-z]*+[ ]*+(<|>|=|!=|<=|>=)+[ ]*+(\\d+|[']+\\S+['])+[ ]*+[;]$";
         final String update1;
-        update1 = "^UPDATE +[A-Za-z]+[0-9A-Za-z]*+ SET +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[=]+[ ]*(\\d+|[']+\\S+['])+ WHERE +[A-Za-z]+[0-9A-Za-z]*+(<|>|=|!=|<=|>=)+[ ]*+(\\d+|[']+\\S+['])+[ ]*+[;]$";
+        update1 = "^UPDATE +[A-Za-z]+[0-9A-Za-z]*+( SET+[ ]+[A-Za-z]+[0-9A-Za-z]*+[ ]*+(=)+[ ]+[']*+[0-9A-Za-z]*)*+[']*+( WHERE+[ ]+[A-Za-z]+[0-9A-Za-z]*+[ ]*+(<|>|=|!=|<=|>=)+[ ]*+[0-9A-Za-z]*)+[ ]*+[;]$";
         final String show1;
         show1 = "^SHOW +[A-Za-z]+[0-9A-Za-z]*+[ ]*+[;]$";
         
